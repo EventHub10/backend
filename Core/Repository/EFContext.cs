@@ -18,5 +18,11 @@ namespace backend.Core.Repository
 
         public DbSet<Sample> Samples { get; set; }
 
+        public DbSet<Event> Events { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Confirmed_People> Confirmed_Peoples { get; set; }
+
     }
 }
