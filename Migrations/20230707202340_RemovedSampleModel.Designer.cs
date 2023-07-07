@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Core.Repository;
@@ -11,9 +12,11 @@ using backend.Core.Repository;
 namespace backend.Migrations
 {
     [DbContext(typeof(EFContext))]
-    partial class EFContextModelSnapshot : ModelSnapshot
+    [Migration("20230707202340_RemovedSampleModel")]
+    partial class RemovedSampleModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace backend.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("confirmed_people");
+                    b.ToTable("confirmed-people_table");
                 });
 
             modelBuilder.Entity("backend.Models.Event", b =>
@@ -88,7 +91,7 @@ namespace backend.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("event");
+                    b.ToTable("event_table");
                 });
 
             modelBuilder.Entity("backend.Models.User", b =>
@@ -115,13 +118,13 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("user");
+                    b.ToTable("user_table");
                 });
 
             modelBuilder.Entity("backend.Models.Confirmed_People", b =>
                 {
                     b.HasOne("backend.Models.Event", "Event")
-                        .WithMany("Confirmed_peoples")
+                        .WithMany()
                         .HasForeignKey("EventID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -146,11 +149,6 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("backend.Models.Event", b =>
-                {
-                    b.Navigation("Confirmed_peoples");
                 });
 #pragma warning restore 612, 618
         }

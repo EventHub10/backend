@@ -1,9 +1,10 @@
 ﻿using backend.Core.Model;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace backend.Models
 {
-    [Table("event_table")]
+    [Table("event")]
     public class Event : BaseEntity
     {
         public int Event_id { get; set; }
@@ -30,7 +31,7 @@ namespace backend.Models
 
         public virtual User User { get; set; }
 
-        //public virtual
-        //ICollection<table_confirmation>confirmed_peoples { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Confirmed_People> Confirmed_peoples { get; set; }
     }
 }

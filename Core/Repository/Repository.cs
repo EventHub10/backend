@@ -6,9 +6,9 @@ namespace backend.Core.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        protected DbContext _context { get; private set; }
+        protected EFContext _context { get; private set; }
 
-        public Repository(DbContext context)
+        public Repository(EFContext context)
         {
             _context = context;
         }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models
 {
-    [Table("confirmed-people_table")]
+    [Table("confirmed_people")]
     public class Confirmed_People : BaseEntity
     {
 

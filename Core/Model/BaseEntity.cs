@@ -1,4 +1,5 @@
-﻿namespace backend.Core.Model
+﻿
+namespace backend.Core.Model
 {
     public class BaseEntity
     {
