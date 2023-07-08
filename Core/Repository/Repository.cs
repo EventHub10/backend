@@ -14,9 +14,9 @@ namespace backend.Core.Repository
         }
 
 
-        public async Task<IEnumerable<TEntity>> GetAll() 
+        public async Task<IEnumerable<TEntity>> GetAll(CancellationToken cancellationToken) 
         {
-            var result = await _context.Set<TEntity>().ToListAsync();
+            var result = await _context.Set<TEntity>().ToListAsync(cancellationToken);
             return result.AsEnumerable();
         }
 

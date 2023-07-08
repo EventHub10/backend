@@ -5,7 +5,7 @@ namespace backend.Core.Repository
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll(CancellationToken cancellationToken);
 
         Task<IEnumerable<T>> GetWithCondition(Expression<Func<T, bool>> exp);
 

@@ -7,10 +7,6 @@ namespace backend.Models
     [Table("event")]
     public class Event : BaseEntity
     {
-        public int Event_id { get; set; }
-
-        public int Owner_id { get; set; }
-
         public string Event_title { get; set;}
 
         public string Event_photo { get; set;}
@@ -26,10 +22,8 @@ namespace backend.Models
         public string Description { get; set; }
 
         [ForeignKey(nameof(User))]
-
-        public Guid UserID { get; set; }
-
-        public virtual User User { get; set; }
+        public Guid OwnerId { get; set; }
+        public virtual User Owner { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<Confirmed_People> Confirmed_peoples { get; set; }
