@@ -1,12 +1,14 @@
 ﻿using backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using System.Reflection.Emit;
 
 namespace backend.Core.Repository
 {
     public class EFContext : DbContext
     {
         protected readonly IConfiguration Configuration;
-        public EFContext(IConfiguration configuration)
+        public EFContext(IConfiguration configuration) : base()
         {
             Configuration = configuration;
         }
@@ -14,9 +16,8 @@ namespace backend.Core.Repository
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
-        }
 
-        public DbSet<Sample> Samples { get; set; }
+        }
 
         public DbSet<Event> Events { get; set; }
 

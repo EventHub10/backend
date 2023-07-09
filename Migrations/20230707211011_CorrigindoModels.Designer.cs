@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Core.Repository;
@@ -11,9 +12,11 @@ using backend.Core.Repository;
 namespace backend.Migrations
 {
     [DbContext(typeof(EFContext))]
-    partial class EFContextModelSnapshot : ModelSnapshot
+    [Migration("20230707211011_CorrigindoModels")]
+    partial class CorrigindoModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,12 +59,15 @@ namespace backend.Migrations
                     b.Property<DateTime>("Event_date")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("Event_id")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Event_photo")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<float>("Event_price")
-                        .HasColumnType("real");
+                    b.Property<int>("Event_price")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Event_title")
                         .IsRequired()
@@ -75,12 +81,15 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("OwnerId")
+                    b.Property<int>("Owner_id")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserID")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("event");
                 });
@@ -133,13 +142,13 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Event", b =>
                 {
-                    b.HasOne("backend.Models.User", "Owner")
+                    b.HasOne("backend.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("backend.Models.Event", b =>

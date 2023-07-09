@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Core.Repository;
@@ -11,9 +12,11 @@ using backend.Core.Repository;
 namespace backend.Migrations
 {
     [DbContext(typeof(EFContext))]
-    partial class EFContextModelSnapshot : ModelSnapshot
+    [Migration("20230707202340_RemovedSampleModel")]
+    partial class RemovedSampleModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace backend.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("confirmed_people");
+                    b.ToTable("confirmed-people_table");
                 });
 
             modelBuilder.Entity("backend.Models.Event", b =>
@@ -56,12 +59,15 @@ namespace backend.Migrations
                     b.Property<DateTime>("Event_date")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("Event_id")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Event_photo")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<float>("Event_price")
-                        .HasColumnType("real");
+                    b.Property<int>("Event_price")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Event_title")
                         .IsRequired()
@@ -75,14 +81,17 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("OwnerId")
+                    b.Property<int>("Owner_id")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserID")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("UserID");
 
-                    b.ToTable("event");
+                    b.ToTable("event_table");
                 });
 
             modelBuilder.Entity("backend.Models.User", b =>
@@ -109,13 +118,13 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("user");
+                    b.ToTable("user_table");
                 });
 
             modelBuilder.Entity("backend.Models.Confirmed_People", b =>
                 {
                     b.HasOne("backend.Models.Event", "Event")
-                        .WithMany("Confirmed_peoples")
+                        .WithMany()
                         .HasForeignKey("EventID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -133,18 +142,13 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Event", b =>
                 {
-                    b.HasOne("backend.Models.User", "Owner")
+                    b.HasOne("backend.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("backend.Models.Event", b =>
-                {
-                    b.Navigation("Confirmed_peoples");
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

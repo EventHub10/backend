@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models
 {
-    [Table("user_table")]
+    [Table("user")]
     public class User : BaseEntity
     {
         public string Name { get; set; }
