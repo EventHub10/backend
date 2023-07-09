@@ -16,8 +16,8 @@ namespace backend.Models
 
         public DateTime Event_date { get; set;}
 
-        public int Event_price { get; set;}
-
+        public float Event_price { get; set;}
+        
         public string Link_to_buy { get; set; }
 
         public string Location { get; set; }
