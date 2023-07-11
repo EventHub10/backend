@@ -9,6 +9,7 @@ namespace backend.Controllers.EventController
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
+    [DisableCors]
     public class EventController : ControllerBase
     {
 

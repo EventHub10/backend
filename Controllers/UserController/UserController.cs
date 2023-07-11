@@ -1,6 +1,7 @@
 using backend.Services.UserServices;
 using backend.Services.UserServices.Dto;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers.UserController
@@ -8,6 +9,7 @@ namespace backend.Controllers.UserController
     [ApiController]
     [Route("api/[controller]")]
     [AllowAnonymous]
+    [DisableCors]
     public class UserController : ControllerBase
     {
 
