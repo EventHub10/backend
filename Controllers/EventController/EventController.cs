@@ -1,13 +1,14 @@
+using backend.Core;
 using backend.Services.EventService;
 using backend.Services.EventService.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace backend.Controllers.UserController
+namespace backend.Controllers.EventController
 {
     [ApiController]
     [Route("api/[controller]")]
-    [AllowAnonymous]
+    [Authorize]
     public class EventController : ControllerBase
     {
 
@@ -33,6 +34,7 @@ namespace backend.Controllers.UserController
             }
         }
 
+      
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
