@@ -75,5 +75,19 @@ namespace backend.Controllers.UserController
             }
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromQuery] string email, string senha, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await _userService.Login(email, senha, cancellationToken);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized();
+            }
+        }
+
     }
 }

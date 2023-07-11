@@ -27,6 +27,7 @@ builder.Services.AddScoped<IRepository<Confirmed_People>, Repository<Confirmed_P
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<EventService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<Token>();
 #endregion
 
 var key = Encoding.ASCII.GetBytes(Settings.Secret);
