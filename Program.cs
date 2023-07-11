@@ -13,10 +13,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("default",
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin();
+                      });
+});
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
 
 
 #region DI container
@@ -59,6 +69,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("default");
 app.UseAuthentication();
 app.UseAuthorization();
 
