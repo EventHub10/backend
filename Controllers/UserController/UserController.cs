@@ -9,7 +9,6 @@ namespace backend.Controllers.UserController
     [ApiController]
     [Route("api/[controller]")]
     [AllowAnonymous]
-    [DisableCors]
     public class UserController : ControllerBase
     {
 
