@@ -2,6 +2,7 @@ using backend.Core;
 using backend.Services.EventService;
 using backend.Services.EventService.Dto;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers.EventController

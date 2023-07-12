@@ -13,6 +13,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddPolicy(
+            "AllowCors",
+            builder =>
+            {
+                builder.AllowAnyOrigin().WithMethods(
+                    HttpMethod.Get.Method,
+                    HttpMethod.Put.Method,
+                    HttpMethod.Post.Method,
+                    HttpMethod.Delete.Method).AllowAnyHeader();
+            });
+    });
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -61,6 +75,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
+app.UseCors("AllowCors");
 app.UseAuthentication();
 app.UseAuthorization();
 
