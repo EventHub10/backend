@@ -39,7 +39,7 @@ namespace backend.Services.EventService
             var Event = new Event
             {
                 Description = dto.Description,   
-                Event_date = dto.Event_date, 
+                Event_date = dto.Event_date.ToUniversalTime(), 
                 Event_price  = dto.Event_price,  
                 Event_photo = dto.Event_photo,
                 Event_title = dto.Event_title,   

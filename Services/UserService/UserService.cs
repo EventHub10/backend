@@ -86,16 +86,23 @@ namespace backend.Services.UserServices
             return user;
         }
 
-        public async Task<string> Login(string email, string password, CancellationToken cancellationToken)
+        public async Task<dynamic> Login(string email, string password, CancellationToken cancellationToken)
         {
             var user = (await _userRepository.GetWithCondition(t => t.Email == email && t.Password == password)).FirstOrDefault();
 
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
+            
 
             var token = _tokenService.GenerateToken(user);
 
-            return token;
+            var result = new
+            {
+                token,
+                UserId = user.Id
+            };
+
+            return result;
         }
 
 
