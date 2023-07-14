@@ -25,7 +25,7 @@ namespace backend.Models
         public Guid OwnerId { get; set; }
         public virtual User Owner { get; set; }
 
-        [JsonIgnore]
+        [NotMapped]
         public virtual ICollection<Confirmed_People> Confirmed_peoples { get; set; }
     }
 }

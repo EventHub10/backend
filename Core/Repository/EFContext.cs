@@ -1,7 +1,5 @@
 ﻿using backend.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System.Reflection.Emit;
 
 namespace backend.Core.Repository
 {
@@ -15,6 +13,7 @@ namespace backend.Core.Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
+            options.UseLazyLoadingProxies();
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
 
         }

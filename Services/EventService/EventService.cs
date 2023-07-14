@@ -1,25 +1,35 @@
 ﻿using backend.Core.Repository;
 using backend.Models;
 using backend.Services.EventService.Dto;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Services.EventService
 {
     public class EventService
     {
+        private readonly IRepository<User> _userRepository;
         private readonly IRepository<Event> _eventRepository;
+        private readonly IRepository<Confirmed_People> _confirmRepository;
 
-        public EventService(IRepository<Event> eventRepository)
+        public EventService(IRepository<Event> eventRepository, IRepository<Confirmed_People> confirmRepository, 
+            IRepository<User> userRepository)
         {
             _eventRepository = eventRepository;
+            _confirmRepository = confirmRepository;
+            _userRepository = userRepository;   
         }
 
 
         public async Task<Event> GetById(Guid id, CancellationToken cancellationToken)
         {
             var Event = (await _eventRepository.GetById(id));
+            
 
             if (Event == null)
                 throw new ArgumentNullException(nameof(Event));
+
+            var confirmedPeoples = await _confirmRepository.GetWithCondition(x => x.EventID == Event.Id);
+            Event.Confirmed_peoples = confirmedPeoples.ToList();
 
             return Event;
         }
@@ -85,6 +95,36 @@ namespace backend.Services.EventService
             _eventRepository.Delete(Event);
             await _eventRepository.SaveChanges(cancellationToken);
             return Event;
+        }
+
+        public async Task<bool> ConfirmPresence(Guid userId, Guid eventId, 
+            CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.GetById(userId);
+            var Event = await _eventRepository.GetById(eventId);
+            var alreadyConfirmed = (await _confirmRepository.ExistsAny(x => x.UserID == userId && x.EventID == eventId));
+
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            if (Event == null)
+                throw new ArgumentNullException(nameof(Event));
+
+            if (alreadyConfirmed) 
+            {
+                throw new ArgumentException("Você já confirmou presença nesse evento.");
+            }
+
+            var confirm = new Confirmed_People
+            {
+                EventID = eventId,
+                UserID = userId,
+            };
+
+            await _confirmRepository.Create(confirm);
+            await _confirmRepository.SaveChanges(cancellationToken);
+
+            return true;
         }
     }
 }

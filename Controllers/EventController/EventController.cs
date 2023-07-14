@@ -94,5 +94,20 @@ namespace backend.Controllers.EventController
             }
         }
 
+        [HttpPost("confirmPresence/{userId}/{eventId}")]
+        public async Task<IActionResult> ConfirmPresence(Guid userId, Guid eventId, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await _eventService.ConfirmPresence(userId, eventId, cancellationToken);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

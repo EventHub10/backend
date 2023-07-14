@@ -40,7 +40,7 @@ namespace backend.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("confirmed_people");
+                    b.ToTable("confirmed_people", (string)null);
                 });
 
             modelBuilder.Entity("backend.Models.Event", b =>
@@ -82,7 +82,7 @@ namespace backend.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("event");
+                    b.ToTable("event", (string)null);
                 });
 
             modelBuilder.Entity("backend.Models.User", b =>
@@ -109,7 +109,7 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("user");
+                    b.ToTable("user", (string)null);
                 });
 
             modelBuilder.Entity("backend.Models.Confirmed_People", b =>
