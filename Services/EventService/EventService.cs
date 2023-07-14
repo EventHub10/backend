@@ -44,7 +44,7 @@ namespace backend.Services.EventService
             if (Event == null)
                 throw new ArgumentNullException(nameof(Event));
 
-            return Event;
+            return Event.OrderByDescending(x => x.Event_date);
         }
 
         public async Task<Event> Insert(EventDto dto, CancellationToken cancellationToken)
