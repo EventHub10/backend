@@ -37,6 +37,7 @@ namespace backend.Controllers.EventController
 
       
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
             try
