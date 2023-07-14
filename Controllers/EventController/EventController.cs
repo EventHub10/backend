@@ -22,6 +22,7 @@ namespace backend.Controllers.EventController
 
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken) 
         {
             try 

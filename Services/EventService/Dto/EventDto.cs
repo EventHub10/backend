@@ -2,7 +2,7 @@
 {
     public class EventDto
     {
-        public Guid? Id { get; }
+        public Guid? Id { get; set; }
         public Guid? OwnerId { get; set; }
         public string Event_title { get; set; }
         public string Event_photo { get; set; }

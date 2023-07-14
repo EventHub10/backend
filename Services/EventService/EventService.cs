@@ -63,7 +63,7 @@ namespace backend.Services.EventService
             if (Event == null)
                 throw new ArgumentNullException(nameof(Event));
 
-            Event.Event_date = dto.Event_date;
+            Event.Event_date = dto.Event_date.ToUniversalTime();
             Event.Event_price = dto.Event_price;    
             Event.Description = dto.Description;
             Event.Event_photo = dto.Event_photo;
