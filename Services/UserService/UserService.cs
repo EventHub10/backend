@@ -99,7 +99,7 @@ namespace backend.Services.UserServices
             var result = new
             {
                 token,
-                UserId = user.Id
+                user
             };
 
             return result;
