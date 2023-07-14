@@ -12,8 +12,8 @@ using backend.Core.Repository;
 namespace backend.Migrations
 {
     [DbContext(typeof(EFContext))]
-    [Migration("20230706235327_AtualizadoUserModel")]
-    partial class AtualizadoUserModel
+    [Migration("20230714001258_script")]
+    partial class script
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ namespace backend.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("confirmed-people_table");
+                    b.ToTable("confirmed_people");
                 });
 
             modelBuilder.Entity("backend.Models.Event", b =>
@@ -59,15 +59,12 @@ namespace backend.Migrations
                     b.Property<DateTime>("Event_date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Event_id")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Event_photo")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Event_price")
-                        .HasColumnType("integer");
+                    b.Property<float>("Event_price")
+                        .HasColumnType("real");
 
                     b.Property<string>("Event_title")
                         .IsRequired()
@@ -81,36 +78,14 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Owner_id")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("OwnerId");
 
-                    b.ToTable("event_table");
-                });
-
-            modelBuilder.Entity("backend.Models.Sample", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("sample_table");
+                    b.ToTable("event");
                 });
 
             modelBuilder.Entity("backend.Models.User", b =>
@@ -137,13 +112,13 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("user_table");
+                    b.ToTable("user");
                 });
 
             modelBuilder.Entity("backend.Models.Confirmed_People", b =>
                 {
                     b.HasOne("backend.Models.Event", "Event")
-                        .WithMany()
+                        .WithMany("Confirmed_peoples")
                         .HasForeignKey("EventID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -161,13 +136,18 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Event", b =>
                 {
-                    b.HasOne("backend.Models.User", "User")
+                    b.HasOne("backend.Models.User", "Owner")
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("backend.Models.Event", b =>
+                {
+                    b.Navigation("Confirmed_peoples");
                 });
 #pragma warning restore 612, 618
         }

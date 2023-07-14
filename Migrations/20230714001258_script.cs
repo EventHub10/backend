@@ -6,17 +6,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class table_eventhub : Migration
+    public partial class script : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "user_table",
+                name: "user",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    User_id = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
@@ -24,38 +23,36 @@ namespace backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_table", x => x.Id);
+                    table.PrimaryKey("PK_user", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "event_table",
+                name: "event",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Event_id = table.Column<int>(type: "integer", nullable: false),
-                    Owner_id = table.Column<int>(type: "integer", nullable: false),
                     Event_title = table.Column<string>(type: "text", nullable: false),
                     Event_photo = table.Column<string>(type: "text", nullable: false),
                     Event_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Event_price = table.Column<int>(type: "integer", nullable: false),
+                    Event_price = table.Column<float>(type: "real", nullable: false),
                     Link_to_buy = table.Column<string>(type: "text", nullable: false),
                     Location = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    UserID = table.Column<Guid>(type: "uuid", nullable: false)
+                    OwnerId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_event_table", x => x.Id);
+                    table.PrimaryKey("PK_event", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_event_table_user_table_UserID",
-                        column: x => x.UserID,
-                        principalTable: "user_table",
+                        name: "FK_event_user_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "confirmed-people_table",
+                name: "confirmed_people",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -64,48 +61,48 @@ namespace backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_confirmed-people_table", x => x.Id);
+                    table.PrimaryKey("PK_confirmed_people", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_confirmed-people_table_event_table_EventID",
+                        name: "FK_confirmed_people_event_EventID",
                         column: x => x.EventID,
-                        principalTable: "event_table",
+                        principalTable: "event",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_confirmed-people_table_user_table_UserID",
+                        name: "FK_confirmed_people_user_UserID",
                         column: x => x.UserID,
-                        principalTable: "user_table",
+                        principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_confirmed-people_table_EventID",
-                table: "confirmed-people_table",
+                name: "IX_confirmed_people_EventID",
+                table: "confirmed_people",
                 column: "EventID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_confirmed-people_table_UserID",
-                table: "confirmed-people_table",
+                name: "IX_confirmed_people_UserID",
+                table: "confirmed_people",
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_event_table_UserID",
-                table: "event_table",
-                column: "UserID");
+                name: "IX_event_OwnerId",
+                table: "event",
+                column: "OwnerId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "confirmed-people_table");
+                name: "confirmed_people");
 
             migrationBuilder.DropTable(
-                name: "event_table");
+                name: "event");
 
             migrationBuilder.DropTable(
-                name: "user_table");
+                name: "user");
         }
     }
 }
