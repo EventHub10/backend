@@ -10,13 +10,16 @@ namespace backend.Services.EventService
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Event> _eventRepository;
         private readonly IRepository<Confirmed_People> _confirmRepository;
+        private readonly IHttpContextAccessor _accessor;
+
 
         public EventService(IRepository<Event> eventRepository, IRepository<Confirmed_People> confirmRepository, 
-            IRepository<User> userRepository)
+            IRepository<User> userRepository, IHttpContextAccessor accessor)
         {
             _eventRepository = eventRepository;
             _confirmRepository = confirmRepository;
             _userRepository = userRepository;   
+            _accessor = accessor;   
         }
 
 
@@ -65,6 +68,9 @@ namespace backend.Services.EventService
 
         public async Task<Event> Update(EventDto dto, CancellationToken cancellationToken)
         {
+
+            var userId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(item => item.Type == "userId").Value);
+
             if (dto.Id == null)
                 throw new ArgumentNullException(nameof(dto));
 
@@ -72,6 +78,11 @@ namespace backend.Services.EventService
 
             if (Event == null)
                 throw new ArgumentNullException(nameof(Event));
+
+            if (userId != Event.OwnerId) 
+            {
+                throw new ArgumentException("Não é possível editar esse evento");
+            }
 
             Event.Event_date = dto.Event_date.ToUniversalTime();
             Event.Event_price = dto.Event_price;    
@@ -88,9 +99,15 @@ namespace backend.Services.EventService
         public async Task<Event> Delete(Guid id, CancellationToken cancellationToken)
         {
             var Event = await _eventRepository.GetById(id);
+            var userId = Guid.Parse(_accessor.HttpContext.User.Claims.FirstOrDefault(item => item.Type == "userId").Value);
 
             if (Event == null)
                 throw new ArgumentNullException(nameof(Event));
+
+            if (userId != Event.OwnerId) 
+            {
+                throw new ArgumentException("Não é possível excluir esse evento");
+            }
 
             _eventRepository.Delete(Event);
             await _eventRepository.SaveChanges(cancellationToken);
